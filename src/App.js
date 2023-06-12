@@ -2,8 +2,29 @@ import logo from './logo.svg';
 import './App.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import TabConfig from './TabConfig';
+import { useEffect, useState } from 'react';
 
 function App() {
+  const [isScript, setScript] = useState(!!document.getElementById('websdk'));
+
+  useEffect(() => {
+    if (document.getElementById('websdk')) {
+      setScript(true);
+    } else {
+      const script = document.createElement('script');
+
+      script.src =
+        'https://kyc-process-fiserv-dev.apps.rndlab.online/kycWebSdk.js';
+      // script.src = 'http://localhost:4000/kycWebSdk.js';
+      // script.src = 'https://xyzwebsdktest.vercel.app/kycWebSdk.js';
+      script.id = 'websdk';
+      script.defer = true;
+
+      document.head.appendChild(script);
+    }
+  }, [document.getElementById('websdk')]);
+
+
   return (
     <BrowserRouter>
       <Routes>
